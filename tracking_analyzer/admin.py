@@ -2,7 +2,7 @@ import json
 
 from django.contrib import admin
 from django.db.models import Count
-
+from django.urls import reverse
 from django_countries import countries
 
 try:
@@ -18,15 +18,15 @@ class TrackerAdmin(admin.ModelAdmin):
     date_hierarchy = 'timestamp'
     raw_id_fields = ['user']
     readonly_fields = [
-        'content_type', 'object_id', 'ip_address', 'ip_country', 'ip_region',
+        'action', 'request_type', 'ip_address', 'ip_country', 'ip_region',
         'ip_city', 'referrer', 'device_type', 'device', 'browser',
         'browser_version', 'system', 'system_version', 'user'
     ]
     list_filter = [
-        ('timestamp', admin.DateFieldListFilter), 'device_type', 'content_type'
+        ('timestamp', admin.DateFieldListFilter), 'device_type', 'action', 'request_source'
     ]
     list_display = [
-        'details', 'content_object_link', 'timestamp', 'ip_address_link',
+        'details', 'action', 'request_type', 'request_source', 'timestamp', 'ip_address_link',
         'ip_country_link', 'ip_city_link', 'user_link',
     ]
     ordering = ['-timestamp']

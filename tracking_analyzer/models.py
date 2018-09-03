@@ -30,9 +30,11 @@ class Tracker(models.Model):
         (UNKNOWN, 'Unknown'),
     )
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.UUIDField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    action = models.CharField(max_length=128, default='dashboard')
+    action_params = models.TextField(default='')
+    request_type = models.CharField(max_length=128, choices=(
+        ('POST', 'POST'), ('GET', 'GET'), ('DELETE', 'DELETE'), ('UPDATE', 'UPDATE')), default='GET')
+    request_source = models.CharField(max_length=128, choices=(('API', 'API'), ('UI', 'UI')), default='UI')
     timestamp = models.DateTimeField(auto_now_add=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     ip_country = CountryField(blank=True)
@@ -46,10 +48,10 @@ class Tracker(models.Model):
     browser_version = models.CharField(max_length=30, blank=True)
     system = models.CharField(max_length=30, blank=True)
     system_version = models.CharField(max_length=30, blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete='cascade')
 
     objects = TrackerManager()
 
     def __str__(self):
-        return '{0} :: {1}, {2}'.format(
-            self.content_object, self.user, self.timestamp)
+        return '{0}:{1} :: {2}, {3}'.format(
+            self.request_source, self.action, self.user, self.timestamp)

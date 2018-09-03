@@ -1,13 +1,14 @@
-import logging
-
 from django.contrib.auth.models import User
 from django.contrib.gis.geoip2 import GeoIP2, GeoIP2Exception
 from django.db import models
 from django.http import HttpRequest
 
+import json
+
 from geoip2.errors import GeoIP2Error
 from ipware.ip import get_real_ip
 
+import logging
 
 logger = logging.getLogger('tracking_analyzer')
 
@@ -17,7 +18,7 @@ class TrackerManager(models.Manager):
     Custom ``Tracker`` model manager that implements a method to create a new
     object instance from an HTTP request.
     """
-    def create_from_request(self, request, content_object):
+    def create_from_request(self, request, action_type, **kwargs):
         """
         Given an ``HTTPRequest`` object and a generic content, it creates a
         ``Tracker`` object to store the data of that request.
@@ -28,8 +29,8 @@ class TrackerManager(models.Manager):
         :return: A newly created ``Tracker`` instance.
         """
         # Sanity checks.
-        assert issubclass(content_object.__class__, models.Model), \
-            '`content_object` is not a Django model'
+        assert isinstance(request, HttpRequest), \
+            '`request` object is not an `HTTPRequest`'
 
         user = request.user
 
@@ -48,6 +49,7 @@ class TrackerManager(models.Manager):
 
         # Get the IP address and so the geographical info, if available.
         ip_address = get_real_ip(request) or ''
+
         if not ip_address:
             logger.debug(
                 'Could not determine IP address for request %s', request)
@@ -60,7 +62,10 @@ class TrackerManager(models.Manager):
                     'Unable to determine geolocation for address %s', ip_address)
 
         tracker = self.model.objects.create(
-            content_object=content_object,
+            action=action_type,
+            action_params=json.dumps(request.GET if request.method == 'GET' else request.POST),
+            request_type=request.method,
+            request_source=kwargs.get('request_source', 'UI'),  # API or UI
             ip_address=ip_address,
             ip_country=city.get('country_code', '') or '',
             ip_region=city.get('region', '') or '',
@@ -74,7 +79,5 @@ class TrackerManager(models.Manager):
             system_version=request.user_agent.os.version_string,
             user=user
         )
-        logger.info('Tracked click in {0} {1}.'.format(
-            content_object._meta.object_name, content_object.pk))
 
         return tracker
