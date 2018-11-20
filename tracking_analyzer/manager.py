@@ -28,8 +28,6 @@ class TrackerManager(models.Manager):
         :return: A newly created ``Tracker`` instance.
         """
         # Sanity checks.
-        assert isinstance(request, HttpRequest), \
-            '`request` object is not an `HTTPRequest`'
         assert issubclass(content_object.__class__, models.Model), \
             '`content_object` is not a Django model'
 
