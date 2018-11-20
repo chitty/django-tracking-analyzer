@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
             name='Tracker',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('object_id', models.PositiveIntegerField()),
+                ('object_id', models.UUIDField()),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('ip_address', models.GenericIPAddressField(blank=True, null=True)),
                 ('ip_country', django_countries.fields.CountryField(blank=True, max_length=2)),
