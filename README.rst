@@ -1,6 +1,6 @@
-========================
-Django Tracking Analyzer
-========================
+=====================================
+Django Tracking Analyzer for Django 2
+=====================================
 
 User actions tracking and analytics for Django sites
 
@@ -16,6 +16,7 @@ User actions tracking and analytics for Django sites
 .. image:: https://readthedocs.org/projects/django-tracking-analyzer/badge/?version=latest
     :target: http://django-tracking-analyzer.readthedocs.io/en/latest/?badge=latest
 
+**THIS IS A FORK OF ORIGINAL PROJECT TO SUPPORT DJANGO 2**
 
 Requirements
 ============
@@ -33,7 +34,7 @@ Installation
 
 1. Install Django Tracking Analyzer from PyPI by using ``pip``::
 
-    pip install django-tracking-analyzer
+    pip install django-tracking-analyzer-django2
 
 
 2. Add ``'django_user_agents'`` and ``'tracking_analyzer'`` entries to Django ``INSTALLED_APPS`` setting.

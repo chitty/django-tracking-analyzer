@@ -28,17 +28,17 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='django-tracking-analyzer',
-    version='0.2',
+    name='django-tracking-analyzer-django2',
+    version='0.3',
     description='User actions tracking and analytics for Django sites.',
-    author='José Luis Patiño Andrés',
-    author_email='jose.lpa@gmail.com',
+    author='José Luis Patiño Andrés / cr0hn',
+    author_email='cr0hn@cr0hn.com',
     url='https://github.com/jose-lpa/django-tracking-analyzer',
     keywords=['django', 'analytics', 'web', 'monitoring', 'logging'],
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     install_requires=[
-        'Django>=1.9',
+        'Django>=2',
         'django-appconf',
         'django-countries',
         'django-ipware',
@@ -56,8 +56,7 @@ setup(
     cmdclass={'test': PyTest},
     classifiers=[
         'Development Status :: 5 - Production/Stable',
-        'Framework :: Django :: 1.9',
-        'Framework :: Django :: 1.10',
+        'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Operating System :: Unix',
