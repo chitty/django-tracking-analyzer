@@ -1,10 +1,14 @@
 import json
 
 from django.contrib import admin
-from django.core.urlresolvers import reverse
 from django.db.models import Count
 
 from django_countries import countries
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 from .compat import get_requests_count
 from .models import Tracker
