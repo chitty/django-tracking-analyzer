@@ -1,8 +1,6 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -48,7 +46,7 @@ class Tracker(models.Model):
     browser_version = models.CharField(max_length=30, blank=True)
     system = models.CharField(max_length=30, blank=True)
     system_version = models.CharField(max_length=30, blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete='cascade')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, unique=False, on_delete=models.CASCADE)
 
     objects = TrackerManager()
 
